@@ -53,6 +53,7 @@
                 <th>Pokemon Name</th>
                 <th>Description</th>
                 <th>Possible Moves</th>
+                <th>Locations</th>
             </tr>
             <tr>
                 <td>
@@ -134,7 +135,39 @@
             ON pokemon.pokemon_id = pokemon_types.pid
             INNER JOIN types
             ON pokemon_types.tid = types.type_id
-            WHERE pokemon.name=?)');
+            WHERE pokemon.name=?');
+                            $stmt->bind_param('s', $name);
+                            $stmt->execute();
+                            $stmt->bind_result($pokeMoves);
+                            $results = $stmt->fetch();
+                            
+                            if ($conn->connect_error) {
+                                die("Connection failed: " . $conn->connect_error);
+                            } 
+                            
+                            $stmt->close();
+                            $conn->close();
+                        }
+                    ?>
+                </td>
+                <td>
+                    <?php
+                        if(isset($_POST['pokeButton'])){
+                            $servername = "oniddb.cws.oregonstate.edu";
+                            $username = "anderleo-db";
+                            $password = "ubEbNUFD6CXwxbCJ";
+                            $dbname = "anderleo-db";
+                            
+                            $name = $_POST['pokeDropdown'];
+                            // Create connection
+                            $conn = new mysqli($servername, $username, $password, $dbname);
+                            // Check connection
+                            $stmt = $conn->prepare('SELECT location_name FROM locations
+                                                        INNER JOIN pokemon_location
+                                                        ON locations.location_id = pokemon_location.lid
+                                                        INNER JOIN pokemon
+                                                        ON pokemon_location.pid = pokemon.pokemon_id
+                                                        WHERE pokemon_name = ?');
                             $stmt->bind_param('s', $name);
                             $stmt->execute();
                             $stmt->bind_result($pokeMoves);
@@ -155,6 +188,7 @@
     <hr>
     <div>
         <div class="container-fluid">
+            <form action='queries.php' method='POST'>
             Add a Pokemon Sighting:  
              Pokemon: <select id = "pokeDropdown" name = "pokeDropdown">
                      <?php
@@ -209,6 +243,7 @@
                       ?>
                 </select>
             <input name="addSighting" type="submit" class="btn-primary" value="Update PokeDex"/>
+            </form>
         </div>
     </div>
     <hr>
