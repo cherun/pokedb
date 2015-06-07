@@ -1,0 +1,12 @@
+#headline {
+    text-align: center;  
+    background-color: darkcyan;
+}
+
+#tableHolder{
+    margin-top: 50px;
+}
+
+#mainContent {
+    background-color: cadetblue;
+}
