@@ -52,6 +52,7 @@
                 <th>Pokedex ID</th>
                 <th>Pokemon Name</th>
                 <th>Description</th>
+                <th>Possible Moves</th>
             </tr>
             <tr>
                 <td>
@@ -115,13 +116,46 @@
                         }
                     ?>
                 </td>
+                <td>
+                    <?php
+                        if(isset($_POST['pokeButton'])){
+                            $servername = "oniddb.cws.oregonstate.edu";
+                            $username = "anderleo-db";
+                            $password = "ubEbNUFD6CXwxbCJ";
+                            $dbname = "anderleo-db";
+                            
+                            $name = $_POST['pokeDropdown'];
+                            // Create connection
+                            $conn = new mysqli($servername, $username, $password, $dbname);
+                            // Check connection
+                            $stmt = $conn->prepare('SELECT move_name, type_name  FROM moves, types
+            WHERE moves.type = types.type_id AND types.type_name = (SELECT type_name FROM pokemon
+            INNER JOIN pokemon_types
+            ON pokemon.pokemon_id = pokemon_types.pid
+            INNER JOIN types
+            ON pokemon_types.tid = types.type_id
+            WHERE pokemon.name=?)');
+                            $stmt->bind_param('s', $name);
+                            $stmt->execute();
+                            $stmt->bind_result($pokeMoves);
+                            $results = $stmt->fetch();
+                            
+                            if ($conn->connect_error) {
+                                die("Connection failed: " . $conn->connect_error);
+                            } 
+                            
+                            $stmt->close();
+                            $conn->close();
+                        }
+                    ?>
+                </td>
             </tr>
         </table>
     </div>
     <hr>
     <div>
         <div class="container-fluid">
-            <h2>Add a Pokemon Sighting</h2>
+            Add a Pokemon Sighting:  
              Pokemon: <select id = "pokeDropdown" name = "pokeDropdown">
                      <?php
                         $servername = "oniddb.cws.oregonstate.edu";
@@ -175,19 +209,6 @@
                       ?>
                 </select>
             <input name="addSighting" type="submit" class="btn-primary" value="Update PokeDex"/>
-        </div>
-    </div>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-xs-4">
-                <p>A row</p>
-            </div>
-            <div class="col-xs-4">
-                <p>To use</p>
-            </div>
-            <div class="col-xs-4">
-                <p>As needed</p>
-            </div>
         </div>
     </div>
     <hr>
