@@ -5,6 +5,4 @@ Pokémon database for CS 340: Introduction to Databases
 
 Based on Generation I (Red/Blue/Yellow).
 
-Outline and description of project: [pokemondb.pdf](https://github.com/cherun/pokedb/blob/master/pokemondb.pdf)
-
-Includes entity-relationship (ER) diagram and schema.
+Outline and description of project, with entity-relationship (ER) diagram and schema: [pokemondb.pdf](https://github.com/cherun/pokedb/blob/master/pokemondb.pdf)
