@@ -1,7 +1,7 @@
 <?php
 $servername = "oniddb.cws.oregonstate.edu";
 $username = "anderleo-db";
-$password = "ubEbNUFD6CXwxbCJ";
+$password = "wqTNDsuHj21IEyZm";
 $dbname = "anderleo-db";
 
 // Create connection
